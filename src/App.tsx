@@ -25,8 +25,19 @@ function calculateWinner(squares: number[]) {
     return null;
 }
 
-class App extends React.Component<any, any> {
-    constructor(props: any) {
+type MyState = {
+    history:
+    {
+        squares: any,
+        clickedSquare: number[]
+    }[],
+    stepNumber: number,
+    xIsNext: boolean,
+    ascending: boolean
+};
+
+class App extends React.Component<{}, MyState> {
+    constructor(props: {}) {
         super(props);
         this.state = {
             history: [
@@ -81,7 +92,7 @@ class App extends React.Component<any, any> {
         const winner = calculateWinner(current.squares);
         const ascending = this.state.ascending;
 
-        const moves = history.map((step: any, move: number) => {
+        const moves = history.map((step: { clickedSquare: any; }, move: number) => {
             const clickedSquare = step.clickedSquare;
             const desc = move ?
                 `Go to move #${move} (${clickedSquare[0]}, ${clickedSquare[1]})` :
@@ -112,7 +123,7 @@ class App extends React.Component<any, any> {
                 <div className="game-board">
                     <Board
                         squares={current.squares}
-                        onClick={(i: any) => this.handleClick(i)}
+                        onClick={(i: number) => this.handleClick(i)}
                         winner={winner && winner.winningSquare}
                     />
                     <br />

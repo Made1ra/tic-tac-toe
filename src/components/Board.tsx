@@ -1,7 +1,13 @@
 import React from 'react';
 import Square from './Square';
 
-function Board(props: any) {
+type BoardProps = {
+    winner: number[] | null,
+    squares: number[],
+    onClick: any
+};
+
+function Board(props: BoardProps) {
     function renderSquare(i: number) {
         const winningSquare = props.winner && props.winner.includes(i) ? true : false;
 

@@ -1,6 +1,12 @@
 import React from 'react';
 
-function Square(props: any) {
+type SquareProps = {
+    winningSquare: boolean,
+    value: number,
+    onClick: React.MouseEventHandler<HTMLButtonElement>
+};
+
+function Square(props: SquareProps) {
     return (
         <button
             className="square"
