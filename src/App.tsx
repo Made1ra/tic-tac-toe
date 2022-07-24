@@ -92,7 +92,7 @@ class App extends React.Component<{}, MyState> {
         const winner = calculateWinner(current.squares);
         const ascending = this.state.ascending;
 
-        const moves = history.map((step: { clickedSquare: any; }, move: number) => {
+        const moves = history.map((step, move) => {
             const clickedSquare = step.clickedSquare;
             const desc = move ?
                 `Go to move #${move} (${clickedSquare[0]}, ${clickedSquare[1]})` :
