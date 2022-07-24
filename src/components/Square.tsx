@@ -5,6 +5,7 @@ function Square(props: any) {
         <button
             className="square"
             onClick={props.onClick}
+            style={props.winningSquare ? { backgroundColor: "#ccc" } : {}}
         >
             {props.value}
         </button>

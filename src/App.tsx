@@ -15,7 +15,10 @@ function calculateWinner(squares: number[]) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return {
+                winner: squares[a],
+                winningSquare: lines[i],
+            }
         }
     }
 
@@ -28,11 +31,13 @@ class App extends React.Component<any, any> {
         this.state = {
             history: [
                 {
-                    squares: Array(9).fill(null)
+                    squares: Array(9).fill(null),
+                    clickedSquare: [0, 0],
                 }
             ],
             stepNumber: 0,
-            xIsNext: true
+            xIsNext: true,
+            ascending: true,
         };
     }
 
@@ -48,11 +53,12 @@ class App extends React.Component<any, any> {
         this.setState({
             history: history.concat([
                 {
-                    squares: squares
+                    squares: squares,
+                    clickedSquare: [Math.floor((i % 3) + 1), Math.floor((i / 3) + 1)],
                 }
             ]),
             stepNumber: history.length,
-            xIsNext: !this.state.xIsNext
+            xIsNext: !this.state.xIsNext,
         });
     }
 
@@ -63,25 +69,40 @@ class App extends React.Component<any, any> {
         });
     }
 
+    sortMoves() {
+        this.setState({
+            ascending: !this.state.ascending,
+        });
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
+        const ascending = this.state.ascending;
 
-        const moves = history.map((step: number, move: number) => {
+        const moves = history.map((step: any, move: number) => {
+            const clickedSquare = step.clickedSquare;
             const desc = move ?
-                'Go to move #' + move :
+                `Go to move #${move} (${clickedSquare[0]}, ${clickedSquare[1]})` :
                 'Go to game start';
             return (
                 <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                    <button
+                        style={this.state.stepNumber === move ? { fontWeight: "bold" } : {}}
+                        onClick={() => this.jumpTo(move)}
+                    >
+                        {desc}
+                    </button>
                 </li>
             );
         });
 
         let status: string;
         if (winner) {
-            status = 'Winner: ' + winner;
+            status = 'Winner: ' + winner.winner;
+        } else if (this.state.stepNumber === 9 && !winner) {
+            status = 'Draw';
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
@@ -92,11 +113,14 @@ class App extends React.Component<any, any> {
                     <Board
                         squares={current.squares}
                         onClick={(i: any) => this.handleClick(i)}
+                        winner={winner && winner.winningSquare}
                     />
+                    <br />
+                    <button onClick={() => this.sortMoves()}>Toggle the sort order</button>
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <ol>{moves}</ol>
+                    <ol>{ascending ? moves : moves.reverse()}</ol>
                 </div>
             </div>
         );
