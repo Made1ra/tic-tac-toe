@@ -1,21 +1,13 @@
-import React from 'react';
-
-type SquareProps = {
-    winningSquare: boolean,
-    value: number,
-    onClick: React.MouseEventHandler<HTMLButtonElement>
-};
-
-function Square(props: SquareProps) {
+export default function Square({
+    value,
+    onSquareClick
+}: {
+    value: 'X' | 'O' | null;
+    onSquareClick: () => void;
+}) {
     return (
-        <button
-            className="square"
-            onClick={props.onClick}
-            style={props.winningSquare ? { backgroundColor: "#ccc" } : {}}
-        >
-            {props.value}
+        <button className="square" onClick={onSquareClick}>
+            {value}
         </button>
     );
 }
-
-export default Square;
