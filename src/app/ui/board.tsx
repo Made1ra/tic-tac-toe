@@ -1,5 +1,5 @@
-import { calculateWinner } from '../utilities/calculateWinner';
-import Square from './Square';
+import { calculateWinner } from '@/app/lib/utils';
+import Square from '@/app/ui/square';
 
 export default function Board({
     xIsNext,
