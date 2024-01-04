@@ -30,7 +30,7 @@ export default function Board({
     if (winner) {
         status = `Winner: ${winner}`;
     } else if (squares.every((square) => square !== null)) {
-        status = 'Draw!';
+        status = 'Draw';
     } else {
         status = `Next player: ${xIsNext ? 'X' : 'O'}`;
     }
