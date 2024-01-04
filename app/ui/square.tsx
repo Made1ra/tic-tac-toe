@@ -3,7 +3,7 @@ export default function Square({
     value,
     onSquareClick
 }: {
-    winningSquare: boolean | null;
+    winningSquare: boolean;
     value: 'X' | 'O' | null;
     onSquareClick: () => void;
 }) {

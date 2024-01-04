@@ -10,8 +10,8 @@ export default function Board({
     squares: Array<'X' | 'O' | null>;
     onPlay: (squares: Array<'X' | 'O' | null>) => void;
 }) {
-    function handleClick(i: number) {
-        if (squares[i] || calculateWinner(squares)) {
+    function handleClick(i: number, winner: 'X' | 'O' | null) {
+        if (squares[i] || winner) {
             return;
         }
 
@@ -25,10 +25,12 @@ export default function Board({
         onPlay(nextSquares);
     }
 
-    const winner = calculateWinner(squares);
+    const { winner, winningSquares } = calculateWinner(squares);
     let status;
     if (winner) {
         status = `Winner: ${winner}`;
+    } else if (squares.every((square) => square !== null)) {
+        status = 'Draw!';
     } else {
         status = `Next player: ${xIsNext ? 'X' : 'O'}`;
     }
@@ -40,10 +42,10 @@ export default function Board({
                 <div className="board-row" key={row}>
                     {[0, 1, 2].map((col) => (
                         <Square
-                            key={col}
-                            winningSquare={false}
+                            key={row * 3 + col}
+                            winningSquare={winningSquares ? winningSquares.includes(row * 3 + col) : false}
                             value={squares[row * 3 + col]}
-                            onSquareClick={() => handleClick(row * 3 + col)}
+                            onSquareClick={() => handleClick(row * 3 + col, winner)}
                         />
                     ))}
                 </div>
