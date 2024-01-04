@@ -4,14 +4,18 @@ import { useState } from 'react';
 import Board from '@/app/ui/board';
 
 export default function Home() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState([{ squares: Array(9).fill(null), index: -1 }]);
   const [currentMove, setCurrentMove] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
   const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[currentMove];
+  const currentSquares = history[currentMove].squares;
 
-  function handlePlay(nextSquares: Array<'X' | 'O' | null>) {
-    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+  function handlePlay(i: number, nextSquares: Array<'X' | 'O' | null>) {
+    const nextHistory = [
+      ...history.slice(0, currentMove + 1), {
+        squares: nextSquares,
+        index: i
+      }];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
   }
@@ -24,10 +28,14 @@ export default function Home() {
     setIsAscending(!isAscending);
   }
 
-  const moves = history.map((_, move) => {
+  const moves = history.map((moveInfo, move) => {
     let description;
+    let moveDetails = '';
     if (move > 0) {
-      description = `Go to move #${move}`;
+      const row = Math.floor(moveInfo.index / 3);
+      const col = moveInfo.index % 3;
+      moveDetails = `(${row}, ${col})`;
+      description = `Go to move #${move} (${row}, ${col})`;
     } else {
       description = 'Go to game start';
     }
@@ -35,7 +43,7 @@ export default function Home() {
     return (
       <li key={move}>
         {move === currentMove ? (
-          <p>You are at move #{move}</p>
+          <p>You are at move #{move} {moveDetails}</p>
         ) : (
           <button onClick={() => jumpTo(move)}>{description}</button>
         )}

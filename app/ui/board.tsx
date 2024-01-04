@@ -8,7 +8,7 @@ export default function Board({
 }: {
     xIsNext: boolean;
     squares: Array<'X' | 'O' | null>;
-    onPlay: (squares: Array<'X' | 'O' | null>) => void;
+    onPlay: (i: number, squares: Array<'X' | 'O' | null>) => void;
 }) {
     function handleClick(i: number, winner: 'X' | 'O' | null) {
         if (squares[i] || winner) {
@@ -22,7 +22,7 @@ export default function Board({
             nextSquares[i] = 'O';
         }
 
-        onPlay(nextSquares);
+        onPlay(i, nextSquares);
     }
 
     const { winner, winningSquares } = calculateWinner(squares);
