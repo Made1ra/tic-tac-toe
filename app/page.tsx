@@ -34,7 +34,11 @@ export default function Home() {
 
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        {move === currentMove ? (
+          <p>You are at move #{move}</p>
+        ) : (
+          <button onClick={() => jumpTo(move)}>{description}</button>
+        )}
       </li>
     );
   });
@@ -42,13 +46,17 @@ export default function Home() {
   return (
     <div className="game">
       <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        <Board
+          xIsNext={xIsNext}
+          squares={currentSquares}
+          onPlay={handlePlay}
+        />
         <br />
         <button onClick={() => sortMoves()}>Toggle the sort order</button>
       </div>
       <div className="game-info">
         <ol>{isAscending ? moves : moves.reverse()}</ol>
       </div>
-    </div >
+    </div>
   );
 }

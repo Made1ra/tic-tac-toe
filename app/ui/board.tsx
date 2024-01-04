@@ -41,6 +41,7 @@ export default function Board({
                     {[0, 1, 2].map((col) => (
                         <Square
                             key={col}
+                            winningSquare={false}
                             value={squares[row * 3 + col]}
                             onSquareClick={() => handleClick(row * 3 + col)}
                         />
