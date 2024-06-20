@@ -1,21 +1,25 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Board from '@/app/ui/board';
+import { useState } from "react";
+import Board from "@/app/ui/board";
 
 export default function Home() {
-  const [history, setHistory] = useState([{ squares: Array(9).fill(null), index: -1 }]);
+  const [history, setHistory] = useState([
+    { squares: Array(9).fill(null), index: -1 },
+  ]);
   const [currentMove, setCurrentMove] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove].squares;
 
-  function handlePlay(i: number, nextSquares: Array<'X' | 'O' | null>) {
+  function handlePlay(i: number, nextSquares: Array<"X" | "O" | null>) {
     const nextHistory = [
-      ...history.slice(0, currentMove + 1), {
+      ...history.slice(0, currentMove + 1),
+      {
         squares: nextSquares,
-        index: i
-      }];
+        index: i,
+      },
+    ];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
   }
@@ -30,20 +34,22 @@ export default function Home() {
 
   const moves = history.map((moveInfo, move) => {
     let description;
-    let moveDetails = '';
+    let moveDetails = "";
     if (move > 0) {
       const row = Math.floor(moveInfo.index / 3);
       const col = moveInfo.index % 3;
       moveDetails = `(${row}, ${col})`;
       description = `Go to move #${move} (${row}, ${col})`;
     } else {
-      description = 'Go to game start';
+      description = "Go to game start";
     }
 
     return (
       <li key={move}>
         {move === currentMove ? (
-          <p>You are at move #{move} {moveDetails}</p>
+          <p>
+            You are at move #{move} {moveDetails}
+          </p>
         ) : (
           <button onClick={() => jumpTo(move)}>{description}</button>
         )}
@@ -54,11 +60,7 @@ export default function Home() {
   return (
     <div className="game">
       <div className="game-board">
-        <Board
-          xIsNext={xIsNext}
-          squares={currentSquares}
-          onPlay={handlePlay}
-        />
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
         <br />
         <button onClick={() => sortMoves()}>Toggle the sort order</button>
       </div>
